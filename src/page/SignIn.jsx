@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, json, useNavigate } from "react-router-dom";
 import { login } from "../utils/api";
@@ -9,15 +9,16 @@ export default function SignIn() {
   const { errors, isSubmitting } = formState;
   const { state, dispatch } = useAppContext();
   const navigate = useNavigate();
-  async function onSubmit(data) {
-    console.log(data);
+  const [failMessage, setFailMessage] = useState(false);
 
+  async function onSubmit(data) {
+    setFailMessage(false);
     const result = await login(data);
     if (result.success) {
-      console.log(result);
       const user = result.body.findedUser;
-      localStorage.token = result.body.token;
+      console.log("user is: ", user);
       const newUser = {
+        id: user._id,
         email: user.email,
         username: user.username,
         isLoggedIn: true,
@@ -26,19 +27,21 @@ export default function SignIn() {
         type: "setUser",
         payload: newUser,
       });
-      localStorage.user = JSON.stringify({
-        email: user.email,
-        username: user.username,
-        isLoggedIn: true,
-      });
+
       navigate("/profile");
-      console.log("yees logged in");
     } else {
-      console.log(result);
+      setFailMessage(result.message);
     }
   }
   return (
     <div className="text-center mt-10 max-w-lg mx-auto">
+      {failMessage && (
+        <div className="my-10">
+          <h3 className="bg-red-800 text-white py-3 px-2 rounded-md font-bold">
+            {failMessage}
+          </h3>
+        </div>
+      )}
       <h1 className="text-4xl font-bold mb-10">Sign In</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>

@@ -7,23 +7,34 @@ const AppContext = createContext();
 function AppContextProvider({ children }) {
   const [state, dispatch] = useReducer(appReducer, {
     user: {
+      id: "",
       isLoggedIn: false,
       username: "",
       email: "",
     },
-    initialized: false,
-    initializedError: false,
+
     initializeApp,
   });
+
   useEffect(() => {
     const timeOut = setTimeout(initializeApp, 20);
     return () => clearTimeout(timeOut);
   }, []);
+
   async function initializeApp() {
     const result = await initialize();
+    console.log(result);
     if (result.success) {
+      console.log("initialize");
+      const user = {
+        id: result.body._id,
+        email: result.body.email,
+        username: result.body.username,
+        isLoggedIn: true,
+      };
+      dispatch({ type: "setUser", payload: user });
+    } else {
       console.log(result);
-      // dispatch({ type: "setUser", payload: result.body });
     }
   }
 
