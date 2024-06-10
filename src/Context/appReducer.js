@@ -3,5 +3,9 @@ export function appReducer(state, action) {
   switch (type) {
     case "setUser":
       return { ...state, user: payload };
+    case "setInitialized":
+      return { ...state, initialized: payload };
+    case "setError":
+      return { ...state, initializedError: payload };
   }
 }

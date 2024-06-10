@@ -32,17 +32,35 @@ export async function initialize() {
     const { data } = await axios.get("/misc/initialize");
     return data;
   } catch (e) {
-    return { success: false, message: e.message };
+    return { success: false, message: e.response?.data.message || "Server Error" };
   }
 }
 
-export async function updateUser(id, username, password) {
-  console.log(id, username, password);
+export async function updateUser(id, username, password, image) {
   try {
-    const { data } = await axios.put(`/user/${id}`, { username, password });
+    const { data } = await axios.put(`/user/${id}`, {
+      username,
+      password,
+      image,
+    });
     return data;
   } catch (e) {
-    return { success: false, message: e.message };
+    return { success: false, message: e.response?.data.message || "Server Error" };
+  }
+}
+export async function uploadFile(file) {
+  try {
+    const form = new FormData();
+    form.append("file", file);
+    const { data } = await axios.post("/uploads", form);
+
+    return data;
+  } catch (e) {
+    console.log(e);
+    return {
+      success: false,
+      message: e.response?.data.message || "Server Error"
+    };
   }
 }
 export async function signOut() {
@@ -50,7 +68,7 @@ export async function signOut() {
     const { data } = await axios.get("/auth/signout");
     return data;
   } catch (e) {
-    return { success: false, message: e.message };
+    return { success: false, message: e.response?.data.message || "Server Error" };
   }
 }
 
@@ -59,6 +77,6 @@ export async function deleteUser(id) {
     const { data } = await axios.delete("/user/" + id);
     return data;
   } catch (e) {
-    return { success: false, message: e.message };
+    return { success: false, message: e.response?.data.message || "Server Error" };
   }
 }

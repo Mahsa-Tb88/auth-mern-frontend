@@ -11,8 +11,10 @@ function AppContextProvider({ children }) {
       isLoggedIn: false,
       username: "",
       email: "",
+      image: "",
     },
-
+    initialized: false,
+    initializedError: false,
     initializeApp,
   });
 
@@ -22,19 +24,22 @@ function AppContextProvider({ children }) {
   }, []);
 
   async function initializeApp() {
+    dispatch({ type: "setError", payload: false });
     const result = await initialize();
     console.log(result);
+
     if (result.success) {
-      console.log("initialize");
       const user = {
         id: result.body._id,
         email: result.body.email,
         username: result.body.username,
+        image: result.body.image,
         isLoggedIn: true,
       };
       dispatch({ type: "setUser", payload: user });
+      dispatch({ type: "setInitialized", payload: true });
     } else {
-      console.log(result);
+      dispatch({ type: "setError", payload: result.message });
     }
   }
 

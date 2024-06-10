@@ -44,26 +44,26 @@ export default function SignIn() {
       )}
       <h1 className="text-4xl font-bold mb-10">Sign In</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
+        <div className="mb-5">
           <input
-            className="bg-slate-200 focus:border-emerald-600 border  w-full rounded-md mb-5 px-2 text-md py-3"
+            className="bg-slate-200 focus:border-emerald-600 border  w-full rounded-md  px-2 text-md py-3"
             placeholder="email"
             type="text"
             {...register("email", { required: "Please enter your email" })}
           />
-          {errors.email && <p>{errors.email.message}</p>}
+          {errors.email && <p className="text-red-700 text-left">{errors.email.message}</p>}
         </div>
 
-        <div>
+        <div className="mb-5">
           <input
-            className="bg-slate-200 focus:border-emerald-600 border  w-full rounded-md mb-5 px-2 text-md py-3"
+            className="bg-slate-200 focus:border-emerald-600 border  w-full rounded-md  px-2 text-md py-3"
             placeholder="Password"
             type="password"
             {...register("password", {
               required: "Please Enter your password",
             })}
           />
-          {errors.password && <p>{errors.password.message}</p>}
+          {errors.password && <p className="text-red-700 text-left">{errors.password.message}</p>}
         </div>
         <div className="flex flex-col justify-between items-center">
           <button className="bg-emerald-600 mb-4 text-white w-full rounded-md py-3 text-lg font-semibold hover:bg-emerald-800">
