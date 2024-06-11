@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../utils/api.js";
+import OathGoogle from "../components/OathGoogle.jsx";
 
 export default function SignUp() {
   const { register, handleSubmit, formState } = useForm();
@@ -108,9 +109,7 @@ export default function SignUp() {
               Sing Up
             </button>
           )}
-          <button className="bg-red-700 text-white hover:bg-red-800 w-full rounded-md py-3 font-semibold text-lg">
-            Continue with google
-          </button>
+          <OathGoogle />
         </div>
       </form>
       <div className=" mt-2 flex justify-start items-center">

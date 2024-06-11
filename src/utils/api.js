@@ -26,13 +26,26 @@ export async function login(user) {
     };
   }
 }
-
+export async function authGoogle(user) {
+  try {
+    const { data } = await axios.post("/auth/google", user);
+    return data;
+  } catch (e) {
+    return {
+      success: false,
+      message: e.response?.data.message || "Server Error",
+    };
+  }
+}
 export async function initialize() {
   try {
     const { data } = await axios.get("/misc/initialize");
     return data;
   } catch (e) {
-    return { success: false, message: e.response?.data.message || "Server Error" };
+    return {
+      success: false,
+      message: e.response?.data.message || "Server Error",
+    };
   }
 }
 
@@ -45,7 +58,10 @@ export async function updateUser(id, username, password, image) {
     });
     return data;
   } catch (e) {
-    return { success: false, message: e.response?.data.message || "Server Error" };
+    return {
+      success: false,
+      message: e.response?.data.message || "Server Error",
+    };
   }
 }
 export async function uploadFile(file) {
@@ -56,10 +72,9 @@ export async function uploadFile(file) {
 
     return data;
   } catch (e) {
-    console.log(e);
     return {
       success: false,
-      message: e.response?.data.message || "Server Error"
+      message: e.response?.data.message || "Server Error",
     };
   }
 }
@@ -68,7 +83,10 @@ export async function signOut() {
     const { data } = await axios.get("/auth/signout");
     return data;
   } catch (e) {
-    return { success: false, message: e.response?.data.message || "Server Error" };
+    return {
+      success: false,
+      message: e.response?.data.message || "Server Error",
+    };
   }
 }
 
@@ -77,6 +95,9 @@ export async function deleteUser(id) {
     const { data } = await axios.delete("/user/" + id);
     return data;
   } catch (e) {
-    return { success: false, message: e.response?.data.message || "Server Error" };
+    return {
+      success: false,
+      message: e.response?.data.message || "Server Error",
+    };
   }
 }

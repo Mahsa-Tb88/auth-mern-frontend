@@ -12,7 +12,7 @@ export default function Profile() {
   const [selectedImage, setSelectedImage] = useState(noImage);
   const [imageChanged, setImageChanged] = useState(false);
   const [failMessage, setFailMessage] = useState(false);
-  const fileRef = useRef(null);
+  // const fileRef = useRef(null);
   const navigate = useNavigate();
   const {
     register,
@@ -27,8 +27,16 @@ export default function Profile() {
     },
   });
   useEffect(() => {
+    if (!state.user.id) {
+      navigate("/login");
+      return;
+    }
     if (state.user?.image) {
-      setSelectedImage(SERVER_URL + state.user.image);
+      if (state.user.image.includes("uploads")) {
+        setSelectedImage(SERVER_URL + state.user.image);
+      } else {
+        setSelectedImage(state.user.image);
+      }
     } else {
       setSelectedImage(noImage);
     }
@@ -113,6 +121,7 @@ export default function Profile() {
       setFailMessage(result.message);
     }
   }
+
   return (
     <div className="text-center mt-10 max-w-lg mx-auto">
       {successMessage && (

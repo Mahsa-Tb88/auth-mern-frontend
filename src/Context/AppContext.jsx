@@ -26,17 +26,21 @@ function AppContextProvider({ children }) {
   async function initializeApp() {
     dispatch({ type: "setError", payload: false });
     const result = await initialize();
-    console.log(result);
 
     if (result.success) {
-      const user = {
-        id: result.body._id,
-        email: result.body.email,
-        username: result.body.username,
-        image: result.body.image,
-        isLoggedIn: true,
-      };
-      dispatch({ type: "setUser", payload: user });
+      const { body } = result;
+      let user = {};
+      if (body._id) {
+        user = {
+          id: body._id,
+          email: body.email,
+          username: body.username,
+          image: body.image,
+          isLoggedIn: true,
+        };
+        dispatch({ type: "setUser", payload: user });
+      }
+
       dispatch({ type: "setInitialized", payload: true });
     } else {
       dispatch({ type: "setError", payload: result.message });

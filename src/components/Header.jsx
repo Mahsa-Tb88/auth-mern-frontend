@@ -4,7 +4,17 @@ import { useAppContext } from "../Context/AppContext";
 
 export default function Header() {
   const { state, dispatch } = useAppContext();
-  console.log("header...", state.user.image);
+  let profilePic;
+  if (state.user?.image) {
+    if (state.user.image.includes("uploads")) {
+      profilePic = SERVER_URL + state.user.image;
+    } else {
+      profilePic = state.user.image;
+    }
+  } else {
+    profilePic = SERVER_URL + "/uploads/user1718051367920.png";
+  }
+
   return (
     <div className="bg-emerald-500 text-white flex justify-between px-5 py-4">
       <h3 className="font-bold text-xl">
@@ -25,15 +35,7 @@ export default function Header() {
         </Link>
         {state.user.isLoggedIn ? (
           <Link to="profile" className="text-lg font-semibold rounded-md px-2">
-            <img
-              className="h-8 w-8 rounded-full"
-              src={
-                SERVER_URL +
-                (state.user?.image
-                  ? state.user.image
-                  : "/uploads/user1718051367920.png")
-              }
-            />
+            <img className="h-8 w-8 rounded-full" src={profilePic} />
           </Link>
         ) : (
           <Link

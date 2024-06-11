@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, json, useNavigate } from "react-router-dom";
 import { login } from "../utils/api";
 import { useAppContext } from "../Context/AppContext";
+import OathGoogle from "../components/OathGoogle";
 
 export default function SignIn() {
   const { register, handleSubmit, formState } = useForm();
@@ -16,12 +17,13 @@ export default function SignIn() {
     const result = await login(data);
     if (result.success) {
       const user = result.body.findedUser;
-      console.log("user is: ", user);
+      // console.log("user is: ", user);
       const newUser = {
         id: user._id,
         email: user.email,
         username: user.username,
         isLoggedIn: true,
+        image: user.image,
       };
       dispatch({
         type: "setUser",
@@ -51,7 +53,9 @@ export default function SignIn() {
             type="text"
             {...register("email", { required: "Please enter your email" })}
           />
-          {errors.email && <p className="text-red-700 text-left">{errors.email.message}</p>}
+          {errors.email && (
+            <p className="text-red-700 text-left">{errors.email.message}</p>
+          )}
         </div>
 
         <div className="mb-5">
@@ -63,15 +67,15 @@ export default function SignIn() {
               required: "Please Enter your password",
             })}
           />
-          {errors.password && <p className="text-red-700 text-left">{errors.password.message}</p>}
+          {errors.password && (
+            <p className="text-red-700 text-left">{errors.password.message}</p>
+          )}
         </div>
         <div className="flex flex-col justify-between items-center">
           <button className="bg-emerald-600 mb-4 text-white w-full rounded-md py-3 text-lg font-semibold hover:bg-emerald-800">
             Sign In
           </button>
-          <button className="bg-red-700 text-white hover:bg-red-800 w-full rounded-md py-3 font-semibold text-lg">
-            Continue with google
-          </button>
+          <OathGoogle />
         </div>
       </form>
       <div className=" mt-2 flex justify-start items-center">
